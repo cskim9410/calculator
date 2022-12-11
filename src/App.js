@@ -1,16 +1,22 @@
-import { Fragment, useState, useRef } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
-
-  const numberBtnClickHandler = (e) => {
+  // 수식에 클릭한 숫자, 연산자 추가
+  const addExpression = (e) => {
     setInputValue((state) => state + `${e.target.innerText}`);
+  };
+  // 입력식 계산
+  const calcExpression = () => {
+    const calcValue = eval(inputValue);
+    setInputValue(calcValue);
   };
   return (
     <Container>
-      <GridContainer>
-        <RowContainer>
+      <Grid>
+        {/* 입력창 */}
+        <Row>
           <Input
             type="text"
             value={inputValue}
@@ -18,42 +24,40 @@ function App() {
               setInputValue(e.target.value);
             }}
           />
-        </RowContainer>
-        <RowContainer>
+        </Row>
+        {/* 초기화 & 나누기/) */}
+        <Row>
           <CancelButton onClick={() => setInputValue("")}>C</CancelButton>
-          <OperatorButton onClick={numberBtnClickHandler}>/</OperatorButton>
-        </RowContainer>
-        <RowContainer>
-          <CommonButton onClick={numberBtnClickHandler}>1</CommonButton>
-          <CommonButton onClick={numberBtnClickHandler}>2</CommonButton>
-          <CommonButton onClick={numberBtnClickHandler}>3</CommonButton>
-          <OperatorButton onClick={numberBtnClickHandler}>*</OperatorButton>
-        </RowContainer>
-        <RowContainer>
-          <CommonButton onClick={numberBtnClickHandler}>4</CommonButton>
-          <CommonButton onClick={numberBtnClickHandler}>5</CommonButton>
-          <CommonButton onClick={numberBtnClickHandler}>6</CommonButton>
-          <OperatorButton onClick={numberBtnClickHandler}>+</OperatorButton>
-        </RowContainer>
-        <RowContainer>
-          <CommonButton onClick={numberBtnClickHandler}>7</CommonButton>
-          <CommonButton onClick={numberBtnClickHandler}>8</CommonButton>
-          <CommonButton onClick={numberBtnClickHandler}>9</CommonButton>
-          <OperatorButton onClick={numberBtnClickHandler}>-</OperatorButton>
-        </RowContainer>
-        <RowContainer>
-          <CommonButton onClick={numberBtnClickHandler}>.</CommonButton>
-          <CommonButton onClick={numberBtnClickHandler}>0</CommonButton>
-          <CalcButton
-            onClick={() => {
-              const calcValue = eval(inputValue);
-              setInputValue(calcValue);
-            }}
-          >
-            =
-          </CalcButton>
-        </RowContainer>
-      </GridContainer>
+          <OperatorButton onClick={addExpression}>/</OperatorButton>
+        </Row>
+        {/* 1,2,3,,곱하기(*) */}
+        <Row>
+          <CommonButton onClick={addExpression}>1</CommonButton>
+          <CommonButton onClick={addExpression}>2</CommonButton>
+          <CommonButton onClick={addExpression}>3</CommonButton>
+          <OperatorButton onClick={addExpression}>*</OperatorButton>
+        </Row>
+        {/* 4,5,6,더하기(+) */}
+        <Row>
+          <CommonButton onClick={addExpression}>4</CommonButton>
+          <CommonButton onClick={addExpression}>5</CommonButton>
+          <CommonButton onClick={addExpression}>6</CommonButton>
+          <OperatorButton onClick={addExpression}>+</OperatorButton>
+        </Row>
+        {/* 7,8,9,빼기9(-) */}
+        <Row>
+          <CommonButton onClick={addExpression}>7</CommonButton>
+          <CommonButton onClick={addExpression}>8</CommonButton>
+          <CommonButton onClick={addExpression}>9</CommonButton>
+          <OperatorButton onClick={addExpression}>-</OperatorButton>
+        </Row>
+        {/* .,0, 계산(=) */}
+        <Row>
+          <CommonButton onClick={addExpression}>.</CommonButton>
+          <CommonButton onClick={addExpression}>0</CommonButton>
+          <CalcButton onClick={() => calcExpression()}>=</CalcButton>
+        </Row>
+      </Grid>
     </Container>
   );
 }
@@ -65,7 +69,7 @@ const Container = styled.div`
   justify-content: center;
   margin-top: 10%;
 `;
-const GridContainer = styled.div`
+const Grid = styled.div`
   border-radius: 4px;
   border: 2px solid black;
   place-items: center;
@@ -78,7 +82,7 @@ const GridContainer = styled.div`
   padding: 20px;
 `;
 
-const RowContainer = styled.div`
+const Row = styled.div`
   display: grid;
   grid-column-gap: 4px;
   grid-template-columns: repeat(4, 60px);
