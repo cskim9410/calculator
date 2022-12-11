@@ -1,9 +1,28 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import CalcHistory from "./components/CalcHistory";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
-  const regExp = /^[0-9+-/*]+$/;
+  const [calcHistory, setCalcHistory] = useState([]);
+  const isMounted = useRef(false);
+  const regExp = /^[0-9+-/*().]+$/;
+
+  document.addEventListener("keyup", (e) => {
+    if (e.key === "Escape") {
+      setInputValue("");
+    }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      calcExpression();
+    }
+  });
+
+  const deleteHistory = (index) => {
+    const newArr = [...calcHistory];
+    newArr.splice(index, 1);
+    setCalcHistory(newArr);
+  };
 
   // 인풋에 입력한 값이 숫자 또는 연산자인지 판별 boolean 반환
   const checkValidExpression = (e) => {
@@ -15,9 +34,27 @@ function App() {
   };
   // 입력식 계산
   const calcExpression = () => {
-    const calcValue = eval(inputValue);
-    setInputValue(calcValue);
+    if (inputValue) {
+      const calcValue = eval(inputValue);
+      setCalcHistory((state) => {
+        return [inputValue, ...state];
+      });
+      setInputValue(calcValue.toString());
+    }
   };
+  useEffect(() => {
+    if (isMounted.current) {
+      localStorage.setItem("calcHistory", JSON.stringify(calcHistory));
+    } else {
+      isMounted.current = true;
+    }
+  }, [calcHistory]);
+
+  useEffect(() => {
+    const savedHistory = JSON.parse(localStorage.getItem("calcHistory"));
+    setCalcHistory(savedHistory);
+  }, []);
+
   return (
     <Container>
       <Grid>
@@ -68,6 +105,7 @@ function App() {
           <CalcButton onClick={() => calcExpression()}>=</CalcButton>
         </Row>
       </Grid>
+      <CalcHistory calcHistory={calcHistory} deleteHistory={deleteHistory} />
     </Container>
   );
 }
@@ -107,6 +145,10 @@ const CommonButton = styled.button`
   border-radius: 4px;
   box-sizing: border-box;
   grid-column: auto;
+  transition: transform 0.5s;
+  &:active {
+    transform: scale(0.8);
+  }
 `;
 
 const Input = styled.input`
