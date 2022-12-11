@@ -36,10 +36,13 @@ function App() {
   const calcExpression = () => {
     if (inputValue) {
       const calcValue = eval(inputValue);
+      setInputValue(calcValue.toString());
       setCalcHistory((state) => {
+        if (state === null) {
+          return [inputValue];
+        }
         return [inputValue, ...state];
       });
-      setInputValue(calcValue.toString());
     }
   };
   useEffect(() => {
@@ -105,7 +108,9 @@ function App() {
           <CalcButton onClick={() => calcExpression()}>=</CalcButton>
         </Row>
       </Grid>
-      <CalcHistory calcHistory={calcHistory} deleteHistory={deleteHistory} />
+      {calcHistory && (
+        <CalcHistory calcHistory={calcHistory} deleteHistory={deleteHistory} />
+      )}
     </Container>
   );
 }
