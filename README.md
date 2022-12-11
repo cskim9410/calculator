@@ -3,6 +3,12 @@
 숫자를 입력하여 기본 사칙연산이 가능한 계산기 앱.
 ![앱스샷](./emul.png)
 
+# 데모 보기
+
+https://cskim9410.github.io/calculator/
+
+</br>
+
 # 기술 구성
 
 - This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
