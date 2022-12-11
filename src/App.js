@@ -3,6 +3,12 @@ import styled from "styled-components";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
+  const regExp = /^[0-9+-/*]+$/;
+
+  // 인풋에 입력한 값이 숫자 또는 연산자인지 판별 boolean 반환
+  const checkValidExpression = (e) => {
+    return regExp.test(e.target.value);
+  };
   // 수식에 클릭한 숫자, 연산자 추가
   const addExpression = (e) => {
     setInputValue((state) => state + `${e.target.innerText}`);
@@ -21,6 +27,10 @@ function App() {
             type="text"
             value={inputValue}
             onChange={(e) => {
+              if (!checkValidExpression(e)) {
+                alert("유효한 숫자 또는 연산자를 입력하세요.");
+                return;
+              }
               setInputValue(e.target.value);
             }}
           />
