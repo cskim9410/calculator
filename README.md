@@ -15,6 +15,15 @@ https://cskim9410.github.io/calculator/
 - This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 - React v18
 - styled-components v5
+  </br>
+  </br>
+  </br>
+
+# 프로젝트 기간
+
+- 2022-12-11 ( 12시간 )  
+  </br>
+  </br>
 
 # 앱 실행 방법
 
@@ -24,12 +33,12 @@ https://cskim9410.github.io/calculator/
 
 # 22/12/11 개선사항
 
-- [ ] 영문 한글 입력시 에러띄워주기 (정규표현식)
-- [ ] esc로 clear
-- [ ] 백스페이스로 뒤에서부터 지워주기
-- [ ] 계산 로컬스토리지 히스토리 저장 띄워주기
-- [ ] 누를때 액션추가 스케일축소
-- [ ] 파비콘 변경
+- [x] 영문 한글 입력시 에러띄워주기 (정규표현식)
+- [x] esc로 clear
+- [ ] 백스페이스로 뒤에서부터 지워주기 (오류 발견 추후 수정)
+- [x] 계산 로컬스토리지 히스토리 저장 띄워주기
+- [x] 누를때 액션추가 스케일축소
+- [x] 파비콘 변경
 
 # 12/12//11 16:14 리뷰
 
