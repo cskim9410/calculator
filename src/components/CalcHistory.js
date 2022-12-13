@@ -5,7 +5,7 @@ const CalcHistory = (props) => {
       <p>기록</p>
       <Ul>
         {props.calcHistory.map((history, index) => (
-          <Li key={`${index}list`}>
+          <Li key={`${index}-list`}>
             <p>{`${history} = ${eval(history)}`}</p>
             <button
               id={index}
@@ -33,6 +33,7 @@ const Ul = styled.ul`
 
 const Li = styled.li`
   box-sizing: border-box;
+  background-color: white;
   padding: 10px;
   border: 1px solid black;
   list-style-type: none;
@@ -40,9 +41,12 @@ const Li = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  + li {
-    margin-top: 5px;
+  margin-bottom: 5px;
+
+  + li:last-child {
+    margin-bottom: 0px;
   }
+
   button {
     background-color: red;
     border-radius: 50%;
@@ -66,6 +70,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 400px;
-  height: 333px;
 `;

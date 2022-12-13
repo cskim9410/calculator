@@ -8,20 +8,25 @@ function App() {
   const isMounted = useRef(false);
   const regExp = /^[0-9+-/*().]+$/;
 
-  document.addEventListener("keyup", (e) => {
-    if (e.key === "Escape") {
-      setInputValue("");
-    }
-    if (e.key === "Enter") {
-      e.preventDefault();
-      calcExpression();
-    }
-  });
+  useEffect(() => {
+    const savedHistory = JSON.parse(localStorage.getItem("calcHistory"));
+    setCalcHistory(savedHistory);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        setInputValue("");
+        console.log("esc");
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        calcExpression();
+        console.log("enter");
+      }
+    });
+  }, []);
 
-  const deleteHistory = (index) => {
-    const newArr = [...calcHistory];
-    newArr.splice(index, 1);
-    setCalcHistory(newArr);
+  // 계산 기록 삭제
+  const deleteHistory = (id) => {
+    setCalcHistory(calcHistory.filter((_, index) => calcHistory[index] !== id));
   };
 
   // 인풋에 입력한 값이 숫자 또는 연산자인지 판별 boolean 반환
@@ -38,9 +43,8 @@ function App() {
       const calcValue = eval(inputValue);
       setInputValue(calcValue.toString());
       setCalcHistory((state) => {
-        if (state === null) {
-          return [inputValue];
-        }
+        if (state === null) return [inputValue];
+
         return [inputValue, ...state];
       });
     }
@@ -52,11 +56,6 @@ function App() {
       isMounted.current = true;
     }
   }, [calcHistory]);
-
-  useEffect(() => {
-    const savedHistory = JSON.parse(localStorage.getItem("calcHistory"));
-    setCalcHistory(savedHistory);
-  }, []);
 
   return (
     <Container>
