@@ -53,7 +53,9 @@ function App() {
     const calcValue = eval(inputValue);
     setInputValue(calcValue.toString());
     addHistory(inputValue, calcValue);
+    // localStorage.setItem("calcHistory", JSON.stringify(calcHistory));
   };
+
   useEffect(() => {
     if (isMounted.current) {
       localStorage.setItem("calcHistory", JSON.stringify(calcHistory));
@@ -62,22 +64,21 @@ function App() {
     }
   }, [calcHistory]);
 
+  // 인풋 입력될 때 마다 실행되는 핸들러 함수
+  const changeInputHandler = (event) => {
+    if (!checkValidExpression(event)) {
+      alert("유효한 숫자 또는 연산자를 입력하세요.");
+      return;
+    }
+    setInputValue(event.target.value);
+  };
+
   return (
     <Container>
       <Grid>
         {/* 입력창 */}
         <Row>
-          <Input
-            type="text"
-            value={inputValue}
-            onChange={(e) => {
-              if (!checkValidExpression(e)) {
-                alert("유효한 숫자 또는 연산자를 입력하세요.");
-                return;
-              }
-              setInputValue(e.target.value);
-            }}
-          />
+          <Input type="text" value={inputValue} onChange={changeInputHandler} />
         </Row>
         {/* 초기화 & 나누기/) */}
         <Row>
