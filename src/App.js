@@ -14,19 +14,29 @@ function App() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         setInputValue("");
-        console.log("esc");
       }
       if (e.key === "Enter") {
         e.preventDefault();
         calcExpression();
-        console.log("enter");
       }
     });
   }, []);
+  // 계산 기록 추가
+  const addHistory = (value, answer) => {
+    const newHistory = {
+      id: Math.random(),
+      expression: value,
+      answer,
+    };
+    setCalcHistory((state) => {
+      if (state === null) return [newHistory];
+      return [newHistory, ...state];
+    });
+  };
 
   // 계산 기록 삭제
   const deleteHistory = (id) => {
-    setCalcHistory(calcHistory.filter((_, index) => calcHistory[index] !== id));
+    setCalcHistory(calcHistory.filter((history) => history.id !== id));
   };
 
   // 인풋에 입력한 값이 숫자 또는 연산자인지 판별 boolean 반환
@@ -39,15 +49,10 @@ function App() {
   };
   // 입력식 계산
   const calcExpression = () => {
-    if (inputValue) {
-      const calcValue = eval(inputValue);
-      setInputValue(calcValue.toString());
-      setCalcHistory((state) => {
-        if (state === null) return [inputValue];
-
-        return [inputValue, ...state];
-      });
-    }
+    if (!inputValue) return;
+    const calcValue = eval(inputValue);
+    setInputValue(calcValue.toString());
+    addHistory(inputValue, calcValue);
   };
   useEffect(() => {
     if (isMounted.current) {

@@ -1,16 +1,15 @@
 import styled from "styled-components";
-const CalcHistory = (props) => {
+const CalcHistory = ({ calcHistory, deleteHistory }) => {
   return (
     <Container>
       <p>기록</p>
       <Ul>
-        {props.calcHistory.map((history, index) => (
-          <Li key={`${index}-list`}>
-            <p>{`${history} = ${eval(history)}`}</p>
+        {calcHistory.map((history) => (
+          <Li key={history.id}>
+            <p>{`${history.expression} = ${history.answer}`}</p>
             <button
-              id={index}
-              onClick={(e) => {
-                props.deleteHistory(e.target.id);
+              onClick={() => {
+                deleteHistory(history.id);
               }}
             >
               X
