@@ -40,7 +40,7 @@ https://cskim9410.github.io/calculator/
 - [x] 누를때 액션추가 스케일축소
 - [x] 파비콘 변경
 
-# 12/12//11 16:14 리뷰
+# 22/12/11 16:14 리뷰
 
 - 함수명 작성할 때 동사를 앞으로 뺄 것 (동작하나만) (`numberBtnClickHandler` > `addExpression`)
 - CRA 프로젝트 생성 후 쓸모없는 코드 파일 삭제 후 작업하기
@@ -53,4 +53,5 @@ https://cskim9410.github.io/calculator/
 - [x] 기록에서 의미없이 한번 더 돌아가는 계산함수 수정
 - [x] 기록 객체형태로 저장되도록 수정
 - [x] 기록 삭제 함수 splice > filter 로직변경
-- [ ] 반응형 디자인
+- [x] 반응형 디자인
+- [x] 기록 전체 삭제 기능추가
