@@ -8,20 +8,41 @@ function App() {
   const isMounted = useRef(false);
   const regExp = /^[0-9+-/*().]+$/;
 
-  document.addEventListener("keyup", (e) => {
-    if (e.key === "Escape") {
-      setInputValue("");
-    }
-    if (e.key === "Enter") {
-      e.preventDefault();
-      calcExpression();
-    }
-  });
+  useEffect(() => {
+    const savedHistory = JSON.parse(localStorage.getItem("calcHistory"));
+    setCalcHistory(savedHistory);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        setInputValue("");
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        calcExpression();
+      }
+    });
+  }, []);
+  // 계산 기록 추가
+  const addHistory = (value, answer) => {
+    const newHistory = {
+      id: Math.random(),
+      expression: value,
+      answer,
+    };
+    setCalcHistory((state) => {
+      if (state === null) return [newHistory];
+      return [newHistory, ...state];
+    });
+  };
 
-  const deleteHistory = (index) => {
-    const newArr = [...calcHistory];
-    newArr.splice(index, 1);
-    setCalcHistory(newArr);
+  // 계산 기록 삭제
+  const deleteHistory = (id) => {
+    setCalcHistory(calcHistory.filter((history) => history.id !== id));
+  };
+
+  const resetHistory = () => {
+    setCalcHistory(() => {
+      return [];
+    });
   };
 
   // 인풋에 입력한 값이 숫자 또는 연산자인지 판별 boolean 반환
@@ -34,17 +55,13 @@ function App() {
   };
   // 입력식 계산
   const calcExpression = () => {
-    if (inputValue) {
-      const calcValue = eval(inputValue);
-      setInputValue(calcValue.toString());
-      setCalcHistory((state) => {
-        if (state === null) {
-          return [inputValue];
-        }
-        return [inputValue, ...state];
-      });
-    }
+    if (!inputValue) return;
+    const calcValue = eval(inputValue);
+    setInputValue(calcValue.toString());
+    addHistory(inputValue, calcValue);
+    // localStorage.setItem("calcHistory", JSON.stringify(calcHistory));
   };
+
   useEffect(() => {
     if (isMounted.current) {
       localStorage.setItem("calcHistory", JSON.stringify(calcHistory));
@@ -53,27 +70,21 @@ function App() {
     }
   }, [calcHistory]);
 
-  useEffect(() => {
-    const savedHistory = JSON.parse(localStorage.getItem("calcHistory"));
-    setCalcHistory(savedHistory);
-  }, []);
+  // 인풋 입력될 때 마다 실행되는 핸들러 함수
+  const changeInputHandler = (event) => {
+    if (!checkValidExpression(event)) {
+      alert("유효한 숫자 또는 연산자를 입력하세요.");
+      return;
+    }
+    setInputValue(event.target.value);
+  };
 
   return (
     <Container>
       <Grid>
         {/* 입력창 */}
         <Row>
-          <Input
-            type="text"
-            value={inputValue}
-            onChange={(e) => {
-              if (!checkValidExpression(e)) {
-                alert("유효한 숫자 또는 연산자를 입력하세요.");
-                return;
-              }
-              setInputValue(e.target.value);
-            }}
-          />
+          <Input type="text" value={inputValue} onChange={changeInputHandler} />
         </Row>
         {/* 초기화 & 나누기/) */}
         <Row>
@@ -109,7 +120,11 @@ function App() {
         </Row>
       </Grid>
       {calcHistory && (
-        <CalcHistory calcHistory={calcHistory} deleteHistory={deleteHistory} />
+        <CalcHistory
+          calcHistory={calcHistory}
+          deleteHistory={deleteHistory}
+          resetHistory={resetHistory}
+        />
       )}
     </Container>
   );
@@ -119,8 +134,12 @@ export default App;
 const Container = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-top: 10%;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 const Grid = styled.div`
   border-radius: 4px;
