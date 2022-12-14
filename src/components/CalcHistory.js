@@ -1,8 +1,11 @@
 import styled from "styled-components";
-const CalcHistory = ({ calcHistory, deleteHistory }) => {
+const CalcHistory = ({ calcHistory, deleteHistory, resetHistory }) => {
   return (
     <Container>
-      <p>기록</p>
+      <Div>
+        <Span>기록</Span>
+        <Button onClick={resetHistory}>전체 삭제</Button>
+      </Div>
       <Ul>
         {calcHistory.map((history) => (
           <Li key={history.id}>
@@ -23,9 +26,16 @@ const CalcHistory = ({ calcHistory, deleteHistory }) => {
 
 export default CalcHistory;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+`;
+
 const Ul = styled.ul`
   margin: 0;
-  padding: 0 20px 0 0;
+  padding: 0;
   height: 333px;
   overflow: auto;
 `;
@@ -65,8 +75,28 @@ const Li = styled.li`
   }
 `;
 
-const Container = styled.div`
+const Div = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px 30px 20px;
   align-items: center;
+`;
+const Span = styled.span`
+  margin: 0;
+  font-size: 20px;
+`;
+
+const Button = styled.button`
+  background-color: red;
+  border-radius: 4px;
+  font-size: 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: lightcoral;
+  }
+  &:active {
+    transform: scale(0.9);
+  }
 `;

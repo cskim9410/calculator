@@ -39,6 +39,12 @@ function App() {
     setCalcHistory(calcHistory.filter((history) => history.id !== id));
   };
 
+  const resetHistory = () => {
+    setCalcHistory(() => {
+      return [];
+    });
+  };
+
   // 인풋에 입력한 값이 숫자 또는 연산자인지 판별 boolean 반환
   const checkValidExpression = (e) => {
     return regExp.test(e.target.value);
@@ -114,7 +120,11 @@ function App() {
         </Row>
       </Grid>
       {calcHistory && (
-        <CalcHistory calcHistory={calcHistory} deleteHistory={deleteHistory} />
+        <CalcHistory
+          calcHistory={calcHistory}
+          deleteHistory={deleteHistory}
+          resetHistory={resetHistory}
+        />
       )}
     </Container>
   );
@@ -124,8 +134,12 @@ export default App;
 const Container = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-top: 10%;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 const Grid = styled.div`
   border-radius: 4px;
