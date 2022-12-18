@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import CalcHistory from "./components/CalcHistory";
 
@@ -80,53 +80,60 @@ function App() {
   };
 
   return (
-    <Container>
-      <Grid>
-        {/* 입력창 */}
-        <Row>
-          <Input type="text" value={inputValue} onChange={changeInputHandler} />
-        </Row>
-        {/* 초기화 & 나누기/) */}
-        <Row>
-          <CancelButton onClick={() => setInputValue("")}>C</CancelButton>
-          <OperatorButton onClick={addExpression}>/</OperatorButton>
-        </Row>
-        {/* 1,2,3,,곱하기(*) */}
-        <Row>
-          <CommonButton onClick={addExpression}>1</CommonButton>
-          <CommonButton onClick={addExpression}>2</CommonButton>
-          <CommonButton onClick={addExpression}>3</CommonButton>
-          <OperatorButton onClick={addExpression}>*</OperatorButton>
-        </Row>
-        {/* 4,5,6,더하기(+) */}
-        <Row>
-          <CommonButton onClick={addExpression}>4</CommonButton>
-          <CommonButton onClick={addExpression}>5</CommonButton>
-          <CommonButton onClick={addExpression}>6</CommonButton>
-          <OperatorButton onClick={addExpression}>+</OperatorButton>
-        </Row>
-        {/* 7,8,9,빼기9(-) */}
-        <Row>
-          <CommonButton onClick={addExpression}>7</CommonButton>
-          <CommonButton onClick={addExpression}>8</CommonButton>
-          <CommonButton onClick={addExpression}>9</CommonButton>
-          <OperatorButton onClick={addExpression}>-</OperatorButton>
-        </Row>
-        {/* .,0, 계산(=) */}
-        <Row>
-          <CommonButton onClick={addExpression}>.</CommonButton>
-          <CommonButton onClick={addExpression}>0</CommonButton>
-          <CalcButton onClick={() => calcExpression()}>=</CalcButton>
-        </Row>
-      </Grid>
-      {calcHistory && (
-        <CalcHistory
-          calcHistory={calcHistory}
-          deleteHistory={deleteHistory}
-          resetHistory={resetHistory}
-        />
-      )}
-    </Container>
+    <Fragment>
+      <Container>
+        <Grid>
+          {/* 입력창 */}
+          <Row>
+            <Input
+              type="text"
+              value={inputValue}
+              onChange={changeInputHandler}
+            />
+          </Row>
+          {/* 초기화 & 나누기/) */}
+          <Row>
+            <CancelButton onClick={() => setInputValue("")}>C</CancelButton>
+            <OperatorButton onClick={addExpression}>/</OperatorButton>
+          </Row>
+          {/* 1,2,3,,곱하기(*) */}
+          <Row>
+            <CommonButton onClick={addExpression}>1</CommonButton>
+            <CommonButton onClick={addExpression}>2</CommonButton>
+            <CommonButton onClick={addExpression}>3</CommonButton>
+            <OperatorButton onClick={addExpression}>*</OperatorButton>
+          </Row>
+          {/* 4,5,6,더하기(+) */}
+          <Row>
+            <CommonButton onClick={addExpression}>4</CommonButton>
+            <CommonButton onClick={addExpression}>5</CommonButton>
+            <CommonButton onClick={addExpression}>6</CommonButton>
+            <OperatorButton onClick={addExpression}>+</OperatorButton>
+          </Row>
+          {/* 7,8,9,빼기9(-) */}
+          <Row>
+            <CommonButton onClick={addExpression}>7</CommonButton>
+            <CommonButton onClick={addExpression}>8</CommonButton>
+            <CommonButton onClick={addExpression}>9</CommonButton>
+            <OperatorButton onClick={addExpression}>-</OperatorButton>
+          </Row>
+          {/* .,0, 계산(=) */}
+          <Row>
+            <CommonButton onClick={addExpression}>.</CommonButton>
+            <CommonButton onClick={addExpression}>0</CommonButton>
+            <CalcButton onClick={() => calcExpression()}>=</CalcButton>
+          </Row>
+        </Grid>
+        {calcHistory && (
+          <CalcHistory
+            calcHistory={calcHistory}
+            deleteHistory={deleteHistory}
+            resetHistory={resetHistory}
+          />
+        )}
+      </Container>
+      <Guide>Enter: 계산, ESC: 입력 초기화</Guide>
+    </Fragment>
   );
 }
 
@@ -203,4 +210,12 @@ const CalcButton = styled(CommonButton)`
 
 const OperatorButton = styled(CommonButton)`
   background-color: yellow;
+`;
+
+const Guide = styled.p`
+  opacity: 0.5;
+  color: white;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 `;
