@@ -1,12 +1,13 @@
 # 계산기 앱
+# 데모 보기
+
+https://cskim9410.github.io/calculator/
 
 숫자를 입력하여 기본 사칙연산이 가능한 계산기 앱.
 </br>
 ![앱스샷](./emul.png)
 
-# 데모 보기
 
-https://cskim9410.github.io/calculator/
 
 </br>
 
